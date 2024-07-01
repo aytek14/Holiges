@@ -1,0 +1,169 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+@font-face {
+  font-family: 'Nightydemo';
+  src: url('/fonts/Nightydemo.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Nightydemo', sans-serif;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+body, html, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+.landing-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.nav {
+  /* Add your navigation styles here */
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  width: 100%;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 200px 200px;
+  gap: 10px;
+  width: 80%;
+  max-width: 1200px;
+}
+
+.image-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+}
+
+.image-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-item.large {
+  grid-column: span 3;
+  grid-row: span 1;
+}
+
+.image-item.medium {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+.image-item.small {
+  grid-column: span 1;
+  grid-row: span 1;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-color: #ffffff; /* Just for visualization */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.masked-div {
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  overflow: hidden;
+}
+
+.masked-div1 {
+  top: 0;
+  mask-image: url('/rectangle7.png');
+  mask-size: cover;
+  mask-repeat: no-repeat;
+}
+
+.masked-div2 {
+  bottom: 0;
+  mask-image: url('/rectangle8.png');
+  mask-size: cover;
+  mask-repeat: no-repeat;
+}
+
+.masked-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

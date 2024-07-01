@@ -9,9 +9,13 @@ const config: Config = {
   theme: {
     extend: {
       backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        'main-bg': "url('/mainBackground.png')",
+      },
+      fontFamily: {
+        nightydemo: ['Nightydemo', 'sans-serif'],
+      },
+      letterSpacing: {
+        wider: '0.05em',
       },
     },
   },
