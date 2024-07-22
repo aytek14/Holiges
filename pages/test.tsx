@@ -342,30 +342,49 @@ const Test = () => {
               </motion.button>
             ))}
           </div>
-          <div className="flex justify-center items-center mt-6">
-            <motion.div
-              className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center text-2xl font-bold text-red-600"
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 1, repeat: Infinity }}
-            >
-              {timeLeft}s
-            </motion.div>
+          <div className="flex justify-center items-center mt-6 w-full">
+            <AnimatePresence mode="wait">
+              {timeLeft > 0 && !selectedAnswer ? (
+                <motion.div
+                  key="countdown"
+                  initial={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.5 }}
+                  className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center text-2xl font-bold text-red-600"
+                >
+                  <motion.div
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 1, repeat: Infinity }}
+                  >
+                    {timeLeft}s
+                  </motion.div>
+                </motion.div>
+              ) : (
+                <motion.button
+                  key="next-button"
+                  initial={{
+                    opacity: 0,
+                    scale: 0.5,
+                    width: "4rem",
+                    height: "4rem",
+                    borderRadius: "50%",
+                  }}
+                  animate={{
+                    opacity: 1,
+                    scale: 1,
+                    width: "auto",
+                    height: "auto",
+                    borderRadius: "0.5rem",
+                  }}
+                  exit={{ opacity: 0, scale: 0.5 }}
+                  transition={{ duration: 0.5 }}
+                  onClick={handleNextQuestion}
+                  className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition duration-200 ease-in-out"
+                >
+                  Next
+                </motion.button>
+              )}
+            </AnimatePresence>
           </div>
-          {selectedAnswer && (
-            <motion.div
-              className="mt-6 text-right"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-            >
-              <button
-                onClick={handleNextQuestion}
-                className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition duration-200 ease-in-out"
-              >
-                Next
-              </button>
-            </motion.div>
-          )}
         </div>
       </motion.div>
     </div>
