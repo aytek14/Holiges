@@ -275,7 +275,7 @@ const Test = () => {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             />
-            <div className="flex flex-col w-full text-start pt-8">
+            <div className="flex flex-col w-full text-start">
               <p className="text-2xl font-bold text-white">
                 {userScore} Points
               </p>
