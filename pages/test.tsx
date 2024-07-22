@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BadgeItem } from "@/const/type";
 import Loading from "@/components/Loading";
 import { motion, AnimatePresence } from "framer-motion";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
 const Test = () => {
   const router = useRouter();
@@ -22,7 +22,6 @@ const Test = () => {
   const maxPoints = 13250;
   const [feedbackLabel, setFeedbackLabel] = useState<string | null>(null);
   const [showResults, setShowResults] = useState(false);
-
 
   useEffect(() => {
     const fetchBadges = async () => {
@@ -100,9 +99,13 @@ const Test = () => {
   const handleAnswerClick = (answer: string) => {
     setSelectedAnswer(answer);
     setRightAnswer(shuffledQuestions[currentQuestion].correctAnswer);
-    const currentLevel = shuffledQuestions[currentQuestion].level as keyof typeof pointValues;
+    const currentLevel = shuffledQuestions[currentQuestion]
+      .level as keyof typeof pointValues;
 
-    if (answer === shuffledQuestions[currentQuestion].correctAnswer && pointValues[currentLevel] !== undefined) {
+    if (
+      answer === shuffledQuestions[currentQuestion].correctAnswer &&
+      pointValues[currentLevel] !== undefined
+    ) {
       const pointsEarned = pointValues[currentLevel];
       setUserScore(userScore + pointsEarned);
       setCorrectAnswers(correctAnswers + 1);
@@ -198,15 +201,19 @@ const Test = () => {
     setFeedbackLabel(null);
     setShowResults(false);
     // Re-shuffle questions
-    setShuffledQuestions([...shuffledQuestions].sort(() => 0.5 - Math.random()));
+    setShuffledQuestions(
+      [...shuffledQuestions].sort(() => 0.5 - Math.random())
+    );
   };
 
   const handleClose = () => {
-    router.push('/'); // Navigate to home page
+    router.push("/"); // Navigate to home page
   };
 
   if (showResults) {
-    const percentage = Math.round((correctAnswers / shuffledQuestions.length) * 100);
+    const percentage = Math.round(
+      (correctAnswers / shuffledQuestions.length) * 100
+    );
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-purple-700 to-purple-900 text-white p-4">
         <motion.div
@@ -215,9 +222,12 @@ const Test = () => {
           transition={{ duration: 0.5 }}
           className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden p-8 text-center"
         >
-          <h1 className="text-3xl font-bold text-purple-900 mb-4">Congratulations!</h1>
+          <h1 className="text-3xl font-bold text-purple-900 mb-4">
+            Congratulations!
+          </h1>
           <p className="text-xl text-gray-800 mb-6">
-            You scored {correctAnswers}/{shuffledQuestions.length} ({percentage}%)
+            You scored {correctAnswers}/{shuffledQuestions.length} ({percentage}
+            %)
           </p>
           <div className="flex justify-center space-x-4">
             <motion.button
@@ -242,9 +252,8 @@ const Test = () => {
     );
   }
 
-
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-purple-700 to-purple-900 text-white p-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-300 to-blue-900 text-white p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -258,25 +267,30 @@ const Test = () => {
           <p className="text-sm italic text-white opacity-60">
             "{fanLevel.description}"
           </p>
-          <motion.img
-            src={`/level${fanLevel.level}.png`}
-            alt="level"
-            className="w-20 h-16 md:w-24 md:h-24 mx-auto my-4 rounded-lg shadow-md"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          />
-          <p className="text-2xl font-bold text-white">{userScore} Points</p>
-          <div className="w-full bg-gray-200 rounded-full h-2 mt-4">
-            <motion.div
-              className="bg-purple-600 h-2 rounded-full"
-              style={{ width: progressBarWidth }}
-              initial={{ width: 0 }}
-              animate={{ width: progressBarWidth }}
-              transition={{ duration: 0.5 }}
-            ></motion.div>
+          <div className="flex w-full items-center justify-center mt-4  gap-4">
+            <motion.img
+              src={`/level${fanLevel.level}.png`}
+              alt="level"
+              className="w-20 h-16 md:w-24 md:h-24 mx-auto my-4 rounded-lg shadow-md"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            />
+            <div className="flex flex-col w-full text-start pt-8">
+              <p className="text-2xl font-bold text-white">
+                {userScore} Points
+              </p>
+              <div className="w-full bg-gray-200 rounded-full h-2 mt-4">
+                <motion.div
+                  className="bg-purple-600 h-2 rounded-full"
+                  style={{ width: progressBarWidth }}
+                  initial={{ width: 0 }}
+                  animate={{ width: progressBarWidth }}
+                  transition={{ duration: 0.5 }}
+                ></motion.div>
+              </div>
+            </div>
           </div>
         </div>
-
         <div className="p-6">
           <AnimatePresence>
             {feedbackLabel && (
