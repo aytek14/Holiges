@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { BadgeItem } from "@/const/type";
 import Loading from "@/components/Loading";
+import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from 'next/router';
 
 const Test = () => {
+  const router = useRouter();
   const [badgeList, setBadgeList] = useState<BadgeItem[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [shuffledQuestions, setShuffledQuestions] = useState<any[]>([]);
@@ -10,12 +13,16 @@ const Test = () => {
   const [rightAnswer, setRightAnswer] = useState<string | null>(null);
   const [timeLeft, setTimeLeft] = useState(10);
   const [userScore, setUserScore] = useState(0);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
   const [fanLevel, setFanLevel] = useState({
     title: "Baby Fan",
     description: "Remember the first days you came to the stadium",
     level: 1,
   });
-  const maxPoints = 13250; // Maximum points possible
+  const maxPoints = 13250;
+  const [feedbackLabel, setFeedbackLabel] = useState<string | null>(null);
+  const [showResults, setShowResults] = useState(false);
+
 
   useEffect(() => {
     const fetchBadges = async () => {
@@ -93,23 +100,32 @@ const Test = () => {
   const handleAnswerClick = (answer: string) => {
     setSelectedAnswer(answer);
     setRightAnswer(shuffledQuestions[currentQuestion].correctAnswer);
-    const currentLevel = shuffledQuestions[currentQuestion]
-      .level as keyof typeof pointValues;
+    const currentLevel = shuffledQuestions[currentQuestion].level as keyof typeof pointValues;
 
-    if (
-      answer === shuffledQuestions[currentQuestion].correctAnswer &&
-      pointValues[currentLevel] !== undefined
-    ) {
+    if (answer === shuffledQuestions[currentQuestion].correctAnswer && pointValues[currentLevel] !== undefined) {
       const pointsEarned = pointValues[currentLevel];
       setUserScore(userScore + pointsEarned);
+      setCorrectAnswers(correctAnswers + 1);
+      setFeedbackLabel("CORRECT!");
+    } else {
+      setFeedbackLabel("WRONG!");
     }
+
+    setTimeout(() => {
+      setFeedbackLabel(null);
+    }, 3000);
   };
 
   const handleNextQuestion = () => {
-    setSelectedAnswer(null);
-    setRightAnswer(null);
-    setTimeLeft(10);
-    setCurrentQuestion((prev) => prev + 1);
+    if (currentQuestion + 1 < shuffledQuestions.length) {
+      setSelectedAnswer(null);
+      setRightAnswer(null);
+      setTimeLeft(10);
+      setCurrentQuestion((prev) => prev + 1);
+      setFeedbackLabel(null);
+    } else {
+      setShowResults(true);
+    }
   };
 
   const updateFanLevel = () => {
@@ -171,74 +187,173 @@ const Test = () => {
 
   const progressBarWidth = `${(userScore / maxPoints) * 100}%`;
 
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-purple-900 text-white">
-      <div className="flex w-2/3 h-full bg-white rounded-lg shadow-lg ">
-        <div className="text-black p-6 w-full max-w-lg flex flex-col items-center justify-center">
-          <div className="text-4xl font-nightydemo text-purple-900">
-            {fanLevel.title}
+  const handleRetry = () => {
+    // Reset all states to initial values
+    setCurrentQuestion(0);
+    setSelectedAnswer(null);
+    setRightAnswer(null);
+    setTimeLeft(10);
+    setUserScore(0);
+    setCorrectAnswers(0);
+    setFeedbackLabel(null);
+    setShowResults(false);
+    // Re-shuffle questions
+    setShuffledQuestions([...shuffledQuestions].sort(() => 0.5 - Math.random()));
+  };
+
+  const handleClose = () => {
+    router.push('/'); // Navigate to home page
+  };
+
+  if (showResults) {
+    const percentage = Math.round((correctAnswers / shuffledQuestions.length) * 100);
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-purple-700 to-purple-900 text-white p-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden p-8 text-center"
+        >
+          <h1 className="text-3xl font-bold text-purple-900 mb-4">Congratulations!</h1>
+          <p className="text-xl text-gray-800 mb-6">
+            You scored {correctAnswers}/{shuffledQuestions.length} ({percentage}%)
+          </p>
+          <div className="flex justify-center space-x-4">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition duration-200 ease-in-out"
+              onClick={handleRetry}
+            >
+              Retry
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-gray-300 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-400 transition duration-200 ease-in-out"
+              onClick={handleClose}
+            >
+              Close
+            </motion.button>
           </div>
-          <div className="text-md font-inter italic pb-4">{`"${fanLevel.description}"`}</div>
-          <img
+        </motion.div>
+      </div>
+    );
+  }
+
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-purple-700 to-purple-900 text-white p-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden relative"
+      >
+        <div className="bg-blue-600 p-6 text-center">
+          <h1 className="text-lg md:text-3xl font-bold text-white mb-2">
+            {fanLevel.title}
+          </h1>
+          <p className="text-sm italic text-white opacity-60">
+            "{fanLevel.description}"
+          </p>
+          <motion.img
             src={`/level${fanLevel.level}.png`}
             alt="level"
-            className="w-48 h-48 rounded-xl object-contain"
+            className="w-20 h-16 md:w-24 md:h-24 mx-auto my-4 rounded-lg shadow-md"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
           />
-          <div className="text-xl font-bold pt-4 text-purple-900">{`${userScore} Points`}</div>
-          <div className="w-4/5 bg-gray-200 rounded-full h-2.5 dark:bg-gray-200 mt-4">
-            <div
-              className="bg-blue-600 h-2.5 rounded-full"
+          <p className="text-2xl font-bold text-white">{userScore} Points</p>
+          <div className="w-full bg-gray-200 rounded-full h-2 mt-4">
+            <motion.div
+              className="bg-purple-600 h-2 rounded-full"
               style={{ width: progressBarWidth }}
-            ></div>
+              initial={{ width: 0 }}
+              animate={{ width: progressBarWidth }}
+              transition={{ duration: 0.5 }}
+            ></motion.div>
           </div>
         </div>
-        <div className=" text-black p-6  w-full">
-          <div className="flex items-center justify-center p-10">
+
+        <div className="p-6">
+          <AnimatePresence>
+            {feedbackLabel && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5, y: -50 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.5, y: -50 }}
+                transition={{ duration: 0.5 }}
+                className={`absolute top-1/2 left-0 transform -translate-x-1/2 -translate-y-1/2 
+                            ${
+                              feedbackLabel === "CORRECT!"
+                                ? "bg-green-500"
+                                : "bg-red-500"
+                            } 
+                            text-white text-2xl font-bold py-2 px-4 rounded-full 
+                            shadow-lg border-4 border-white`}
+              >
+                {feedbackLabel}
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <div className="flex justify-center mb-6">
             <img
               src={imageUrl}
               alt="Badge"
-              className="w-28 h-28 object-contain"
+              className="w-24 h-24 object-contain"
             />
           </div>
-          <div className="mb-4 text-lg font-bold">{question}</div>
-          <div className="space-y-4">
+          <h2 className="text-lg font-bold text-gray-800 mb-4">{question}</h2>
+          <div className="space-y-3">
             {answers.map((answer: string, index: number) => (
-              <button
+              <motion.button
                 key={index}
                 onClick={() => handleAnswerClick(answer)}
-                className={`block w-full py-2 px-4 rounded focus:outline-none focus:ring-2 ${
+                className={`w-full py-3 px-4 rounded-lg text-left transition duration-200 ease-in-out ${
                   selectedAnswer
                     ? answer === rightAnswer
                       ? "bg-green-500 text-white"
-                      : answer === selectedAnswer ||
-                        selectedAnswer === "timeout"
+                      : answer === selectedAnswer
                       ? "bg-red-500 text-white"
-                      : "bg-gray-200"
-                    : "bg-gray-200 hover:bg-gray-300"
+                      : "bg-gray-100 text-gray-800"
+                    : "bg-gray-100 text-gray-800 hover:bg-purple-100"
                 }`}
                 disabled={selectedAnswer !== null}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
                 {answer}
-              </button>
+              </motion.button>
             ))}
           </div>
-          <div className="flex items-center justify-center py-4">
-            <div className="w-12 h-12 text-2xl font-bold text-center items-center justify-center text-red-600  p-4">
+          <div className="flex justify-center items-center mt-6">
+            <motion.div
+              className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center text-2xl font-bold text-red-600"
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{ duration: 1, repeat: Infinity }}
+            >
               {timeLeft}s
-            </div>
+            </motion.div>
           </div>
           {selectedAnswer && (
-            <div className="mt-4 text-right">
+            <motion.div
+              className="mt-6 text-right"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
               <button
                 onClick={handleNextQuestion}
-                className="inline-block rounded bg-purple-600 px-5 py-2 text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition duration-200 ease-in-out"
               >
                 Next
               </button>
-            </div>
+            </motion.div>
           )}
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

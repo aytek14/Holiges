@@ -3,9 +3,9 @@ import Image from 'next/image';
 
 const Header = () => {
   return (
-    <header className=" py-6 shadow-md h-full flex px-10 text-white">
-      <div className="flex items-center justify-between px-6 md:px-12 w-full">
-        <div className="flex items-center">
+    <header className=" py-6 shadow-md h-full flex px-6 md:px-10 text-white">
+      <div className="flex items-center justify-between px-2 md:px-12 w-full">
+        <div className="flex items-center gap-4">
           <img src="/image1.jpg" className='rounded-full object-fill w-14 h-14' alt="Wondero Logo" />
           <span className="ml-3 text-4xl font-bold font-nightydemo">Holiges</span>
         </div>
