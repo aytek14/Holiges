@@ -4,8 +4,7 @@ import React from "react";
 
 const LandingPage = () => {
   return (
-    <div className="bg-main-bg bg-cover bg-center min-h-screen flex flex-col">
-      <Header />
+    <div className="bg-black">
       <Hero />
     </div>
   );

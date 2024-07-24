@@ -4,7 +4,7 @@ import Loading from "@/components/Loading";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/router";
 
-const Test = () => {
+const Play = () => {
   const router = useRouter();
   const [badgeList, setBadgeList] = useState<BadgeItem[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -215,7 +215,7 @@ const Test = () => {
       (correctAnswers / shuffledQuestions.length) * 100
     );
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-purple-700 to-purple-900 text-white p-4">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-black to-purple-900 text-white p-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -253,7 +253,7 @@ const Test = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-300 to-blue-900 text-white p-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-black to-blue-900 text-white p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -391,4 +391,4 @@ const Test = () => {
   );
 };
 
-export default Test;
+export default Play;
