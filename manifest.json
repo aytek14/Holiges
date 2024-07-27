@@ -1,26 +1,26 @@
 {
-  "name": "Holiges",
-  "description": "Uygulama ile ilgili açıklama",
-  "short_name": "HOL",
-  "icons": [
-    {
-      "src": "/144x144.png",
-      "sizes": "144x144",
-      "type": "image/png"
-    },
-    {
-      "src": "/192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "/512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ],
-  "start_url": "/",
-  "display": "standalone",
-  "theme_color": "#FFFFFF",
-  "background_color": "#FFFFFF"
-}
+    "name": "Holiges",
+    "description": "Uygulama ile ilgili açıklama",
+    "short_name": "HOL",
+    "icons": [
+      {
+        "src": "/144x144.png",
+        "sizes": "144x144",
+        "type": "image/png"
+      },
+      {
+        "src": "/192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ],
+    "start_url": "/",
+    "display": "standalone",
+    "theme_color": "#FFFFFF",
+    "background_color": "#FFFFFF"
+  }
