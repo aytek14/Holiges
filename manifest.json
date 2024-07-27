@@ -19,7 +19,7 @@
       "type": "image/png"
     }
   ],
-  "start_url": "https://abc.sitem.com/",
+  "start_url": "https://holiges.vercel.app/",
   "display": "standalone",
   "theme_color": "#FFFFFF",
   "background_color": "#FFFFFF"
