@@ -4,22 +4,22 @@
   "short_name": "HOL",
   "icons": [
     {
-      "src": "/144x144.png",
+      "src": "/icons/144x144.png",
       "sizes": "144x144",
       "type": "image/png"
     },
     {
-        "src": "/192x192.png",
+      "src": "/icons/192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-        "src": "/512x512.png",
+      "src": "/icons/512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
   ],
-  "start_url": "https://holiges.vercel.app/",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#FFFFFF",
   "background_color": "#FFFFFF"
